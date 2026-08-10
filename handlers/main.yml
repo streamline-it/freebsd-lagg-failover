@@ -1,0 +1,6 @@
+---
+# handlers file for freebsd-lagg-failover
+- name: restart networking
+  ansible.builtin.service:
+    name: netif
+    state: restarted

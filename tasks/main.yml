@@ -1,0 +1,58 @@
+---
+# tasks file for freebsd-lagg-failover
+
+# *** This roles uses failover for lagg and focuses on failover from ethernet to WiFi
+
+# using lineinfile for rc.conf because I have role that organizes this file
+# for this reason I'm not using a BlockInFile
+# Here's an example of the config
+#
+# ifconfig_re0="ether aa:aa:aa:aa:aa:aa"
+# wlans_ath0="wlan0"
+# ifconfig_wlan0="WPA"
+# cloned_iterfaces="lagg0"
+# ifconfig_lagg0="up laggproto failover laggport re0 laggport wlan0 DHCP"
+
+- name: ensure ethernet MAC address is changed to the Wifi's address
+  notify: restart networking
+  ansible.builtin.lineinfile:
+    path: /etc/rc.conf
+    regexp: "ifconfig_{{ freebsd_lagg_failover_primary_port }}"
+    line: "ifconfig_{{ freebsd_lagg_failover_primary_port }}= \"{{ freebsd_lagg_failover_spoofed_mac_address }}\""
+
+- name: ensure WiFi device is named
+  notify: restart networking
+  ansible.builtin.lineinfile:
+    path: /etc/rc.conf
+    regexp: "ifconfig_{{ freebsd_lagg_failover_wifi_device }}="
+    line: "ifconfig_{{ freebsd_lagg_failover_wifi_device }}= \"{{ freebsd_lagg_failover_secondary_port }}\""
+
+- name: ensure WiFi device has security protocol set
+  notify: restart networking
+  ansible.builtin.lineinfile:
+    path: /etc/rc.conf
+    regexp: "ifconfig_{{ freebsd_lagg_failover_secondary_port }}="
+    line: "ifconfig_{{ freebsd_lagg_failover_secondary_port }}= \"{{ freebsd_lagg_failover_wifi_protocol }}\""
+
+- name: ensure lagg device is named
+  notify: restart networking
+  ansible.builtin.lineinfile:
+    path: /etc/rc.conf
+    regexp: "cloned_interface=="
+    line: "cloned_interface=\"{{ freebsd_lagg_failover_lagg_device }}\""
+
+- name: ensure rc.conf is modified for lagg failover (lagg config line)
+  when: freebsd_lagg_failover_use_ipv4 == true
+  notify: restart networking
+  ansible.builtin.lineinfile:
+    path: /etc/rc.conf
+    regexpr: "ifconfig {{ freebsd_lagg_failover_lagg_device }}"
+    line: "ifconfig {{ freebsd_lagg_failover_lagg_device }}=\"failover laggport {{ freebsd_lagg_failover_primary_port }} laggport {{ freebsd_lagg_failover_secondary_port }} {{ freebsd_lagg_failover_ipv4_address }} netmask {{ freebsd_lagg_failover_ipv4_netmask }} {{ freebsd_lagg_failover_network_options }}\""
+
+- name: ensure rc.conf is modified for lagg failover (lagg config linep)
+  when: freebsd_lagg_failover_use_ipv4 == false
+  notify: restart networking
+  ansible.builtin.lineinfile:
+    path: /etc/rc.conf
+    regexpr: "ifconfig {{ freebsd_lagg_failover_lagg_device }}"
+    line: "ifconfig {{ freebsd_lagg_failover_lagg_device }}=\"failover laggport {{ freebsd_lagg_failover_primary_port }} laggport {{ freebsd_lagg_failover_secondary_port }} {{ freebsd_lagg_failover_ipv6_address }} netmask {{ freebsd_lagg_failover_ipv6_netmask }} {{ freebsd_lagg_failover_network_options }} \""
