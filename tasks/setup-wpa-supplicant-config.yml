@@ -1,0 +1,10 @@
+- name: ensure the /etc/wpa_supplicant.conf exists with new config
+  notify:
+    - restart networking
+    - restart routing
+  ansible.builtin.template:
+    src: wpa_supplicant.conf.j2
+    dest: "{{ freebsd_lagg_failover_wpa_config_filepath }}"
+    owner: root
+    group: wheel
+    mode: 0600

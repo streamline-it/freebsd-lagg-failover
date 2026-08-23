@@ -1,0 +1,8 @@
+# ANSIBLE MANAGED  
+{% for item in freebsd_lagg_failover_wifi_ssids %}
+network={
+	ssid="{{ item['ssid'] }}"
+	psk={{ item['passphrase'] }}
+	priority={{ item['priority'] }}
+}
+{% endfor %}

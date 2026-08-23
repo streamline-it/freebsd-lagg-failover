@@ -34,6 +34,7 @@ freebsd_lagg_failover_use_ipv4: true
 freebsd_lagg_failover_ipv4_address:
 
 #ipv4 netmask      
+# make sure to include the word "netmask" before the actual netmask value
 freebsd_lagg_failover_ipv4_netmask:
 
 # if true use IPv6
@@ -48,3 +49,16 @@ freebsd_lagg_failover_ipv6-netmask:
 # any network related options not provided for here can go into this variable
 freebsd_lagg_failover_network_options:
 
+# used to create wpa_supplicant.conf
+# this variable should be sucured via ansible-vault
+freebsd_lagg_failover_wifi_ssids:
+  - ssid:
+    passphrase:
+    priority:
+
+# the following variables are needed in the boot loader file in order
+# to have the WiFi device available before the lagg device in initiated
+# othewise the WiFi device won't be available in time and the lagg device
+# won't have the fallback port initialized
+freebsd_lagg_failover_wifi_firmware_module:
+freebsd_lagg_failover_wifi_driver_module:

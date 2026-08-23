@@ -1,0 +1,52 @@
+---
+# asserts file for freebsd-lagg-failover
+- name: ensure key variables are defined and have values
+  ansible.builtin.assert:
+    that:
+      - freebsd_lagg_failover_spoofed_mac_address is defined
+      - freebsd_lagg_failover_spoofed_mac_address is truthy
+      - freebsd_lagg_failover_wifi_protocol is defined
+      - freebsd_lagg_failover_wifi_protocol is truthy
+      - freebsd_lagg_failover_lagg_device is defined
+      - freebsd_lagg_failover_lagg_device is truthy
+      - freebsd_lagg_failover_wifi_device is defined
+      - freebsd_lagg_failover_wifi_device is truthy
+      - freebsd_lagg_failover_primary_port is defined
+      - freebsd_lagg_failover_primary_port is truthy
+      - freebsd_lagg_failover_secondary_port is defined
+      - freebsd_lagg_failover_secondary_port is truthy
+      - freebsd_lagg_failover_use_ipv4 is defined
+      - freebsd_lagg_failover_use_ipv6 is defined
+      - freebsd_lagg_failover_network_options is defined
+      - freebsd_lagg_failover_wifi_ssids is defined
+      - freebsd_lagg_failover_wifi_ssids is truthy
+      - freebsd_lagg_failover_wifi_firmware_module is defined # going to allow this to be blank in case there is no firmware for the device
+      - freebsd_lagg_failover_wifi_driver_module is defined
+      - freebsd_lagg_failover_wifi_driver_module is truthy
+      - freebsd_lagg_failover_config_filepath is defined
+      - freebsd_lagg_failover_config_filepath is truthy
+      - freebsd_lagg_failover_boot_loader_config_filepath is defined
+      - freebsd_lagg_failover_boot_loader_config_filepath is truthy
+      - freebsd_lagg_failover_wpa_config_filepath is defined
+      - freebsd_lagg_failover_wpa_config_filepath is truthy 
+    fail_msg: "Ensure key variables are defined and have proper values"
+
+- name: ensure IPV4 variables are defined and have values
+  when: freebsd_lagg_failover_use_ipv4 == true 
+  ansible.builtin.assert:
+    that:
+      - freebsd_lagg_failover_ipv4-netmask is defined
+      - freebsd_lagg_failover_ipv4-netmask is truthy
+      - freebsd_lagg_failover_ipv4 address is defined
+      - freebsd_lagg_failover_ipv4 address is truthy
+    fail_msg: "Ensure key variables are defined and have proper values"
+
+- name: ensure IPV6 variables are defined and have values
+  when: freebsd_lagg_failover_use_ipv6 == true 
+  ansible.builtin.assert:
+    that:
+      - freebsd_lagg_failover_ipv6-netmask is defined
+      - freebsd_lagg_failover_ipv6-netmask is truthy
+      - freebsd_lagg_failover_ipv6 address is defined
+      - freebsd_lagg_failover_ipv6 address is truthy
+    fail_msg: "Ensure key variables are defined and have proper values"

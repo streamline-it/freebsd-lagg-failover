@@ -46,6 +46,7 @@ freebsd_lagg_failover_use_ipv4: true
 freebsd_lagg_failover_ipv4_address:
 
 # ipv4 netmask      
+# make sure to inlude the word "netmask" before the netmask value
 freebsd_lagg_failover_ipv4_netmask:
 
 # if true use IPv6
@@ -55,10 +56,17 @@ freebsd_lagg_failover_use_ipv6: true
 freebsd_lagg_failover_ipv6 address:
 
 # ipv6 netmask
+# make sure to inlude the word "netmask" before the netmask value
 freebsd_lagg_failover_ipv6netmask:
 
 # any network related options not provided for here can go into this variable
 freebsd_lagg_failover_network_options:
+
+# vars file
+
+# filepath to the config file
+freebsd_lagg_failover_config_filepath: /etc/rc.conf
+freebsd_lagg_failover_loader_config_filepath: /boot/loader.conf
 
 Dependencies
 ------------
@@ -68,11 +76,27 @@ None
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+- name: lagg failover
+  host: node1.example.com
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  vars: 
+    # the following variable should be secured in an ansible vault file
+    my_wifi_ssid_passhphrase: "password"
+    freebsd_lagg_failover_spoofed_mac_address: f0:33:62:92:b3:b7
+    freebsd_lagg_failover_wifi_device: rtwn0
+    freebsd_lagg_failover_primary_port: em0
+    freebsd_lagg_failover_secondary_port: wlan0
+    freebsd_lagg_failover_network_options: "SYNCDHCP group main_int"
+    freebsd_lagg_failover_wifi_ssid:
+      - mywifissid
+    freebsd_lagg_failover_wifi_ssid_passphrase: "{{ my_wifi_ssid_passphrase }}"
+    freebsd_lagg_failover_wifi_firmware_module: if_rtwn_usb
+    freebsd_lagg_failover_wifi_driver_module: rtwn-rtl8821aufw
+
+  roles:
+
+    name: freebsd-lagg-failover
+   
 
 License
 -------

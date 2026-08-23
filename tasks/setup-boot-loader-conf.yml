@@ -1,0 +1,14 @@
+---
+# task file for freebsd-lagg-failover
+
+# if these modules are not loaded early, the WiFi
+# device connection won't be loaded in time to initialize
+# the lagg device
+
+- name: ensure the WiFi driver and firmware is loaded
+  ansible.builtin.blockinfile:
+    path: "{{ freebsd_lagg_failover_boot_loader_config_filepath }}"
+    marker: "# {mark} freebsd-lagg-failover ANSIBLE MANAGED BLOCK" 
+    block: |
+      {{ freebsd_lagg_failover_wifi_firmware_module }}_load="YES"
+      {{ freebsd_lagg_failover_wifi_driver_module }}_load="YES"

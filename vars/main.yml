@@ -1,2 +1,7 @@
 ---
 # vars file for freebsd-lagg-failover
+#freebsd_lagg_failover_config_filepath: /etc/rc.conf
+
+freebsd_lagg_failover_config_filepath: /etc/rc.conf
+freebsd_lagg_failover_boot_loader_config_filepath: /boot/loader.conf
+freebsd_lagg_failover_wpa_config_filepath: /etc/wpa_supplicant.conf
