@@ -35,18 +35,14 @@
   when: freebsd_lagg_failover_use_ipv4 == true 
   ansible.builtin.assert:
     that:
-      - freebsd_lagg_failover_ipv4-netmask is defined
-      - freebsd_lagg_failover_ipv4-netmask is truthy
-      - freebsd_lagg_failover_ipv4 address is defined
-      - freebsd_lagg_failover_ipv4 address is truthy
+      - freebsd_lagg_failover_ipv4_netmask is defined
+      - freebsd_lagg_failover_ipv4_address is defined
     fail_msg: "Ensure key variables are defined and have proper values"
 
 - name: ensure IPV6 variables are defined and have values
   when: freebsd_lagg_failover_use_ipv6 == true 
   ansible.builtin.assert:
     that:
-      - freebsd_lagg_failover_ipv6-netmask is defined
-      - freebsd_lagg_failover_ipv6-netmask is truthy
-      - freebsd_lagg_failover_ipv6 address is defined
-      - freebsd_lagg_failover_ipv6 address is truthy
+      - freebsd_lagg_failover_ipv6_netmask is defined
+      - freebsd_lagg_failover_ipv6_address is defined
     fail_msg: "Ensure key variables are defined and have proper values"

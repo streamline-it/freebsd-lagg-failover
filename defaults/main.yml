@@ -41,10 +41,10 @@ freebsd_lagg_failover_ipv4_netmask:
 freebsd_lagg_failover_use_ipv6: true
 
 # ipv6 address to use for the lagg device
-freebsd_lagg_failover_ipv6 address:
+freebsd_lagg_failover_ipv6_address:
 
 # ipv6 netmask
-freebsd_lagg_failover_ipv6-netmask:
+freebsd_lagg_failover_ipv6_netmask:
 
 # any network related options not provided for here can go into this variable
 freebsd_lagg_failover_network_options:
